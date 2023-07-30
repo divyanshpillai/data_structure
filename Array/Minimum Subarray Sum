@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int minSubArrayLen(int target, int nums[], int n)
+{
+    int i = 0;
+    int j = 0;
+    int sum = 0;
+    int mini = INT_MAX;
+
+    while (j < n)
+    {
+        sum += nums[j];
+        while (sum >= target)
+        {
+            sum -= nums[i];
+            mini = min(mini, j - i + 1);
+            i++;
+        }
+        j++;
+    }
+
+    if (mini == INT_MAX)
+    {
+        return 0;
+    }
+
+    return mini;
+}
+
+int main()
+{
+    int arr[] = {1, 1, 1, 7, 4, 2};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    cout << minSubArrayLen(11, arr, n) << endl;
+
+    return 0;
+}
