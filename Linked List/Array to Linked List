@@ -1,6 +1,6 @@
-class Node {
-
 // Definition of Linked List
+
+class Node {
 public:
      int data;
      Node* next;
