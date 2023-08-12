@@ -1,0 +1,32 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void reverse(string s)
+{
+    stack<string> st;
+    for (int i = 0; i < s.length(); i++)
+    {
+        string val = "";
+        while (s[i] != ' ' && i < s.length())
+        {
+            val += s[i];
+            i++;
+        }
+        st.push(val);
+    }
+
+    while (!st.empty())
+    {
+        cout << st.top() << " ";
+        st.pop();
+    }
+}
+
+int main()
+{
+    string s = "How are you Divyansh!!";
+    cout << s << endl;
+    reverse(s);
+    return 0;
+}
