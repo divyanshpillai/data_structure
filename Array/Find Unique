@@ -1,0 +1,17 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int findUnique(int *arr, int size)
+{
+    vector <int> freq(1000, 0);
+
+    for(int i = 0; i < size; i++){
+        freq[arr[i]]++;
+    }
+
+    for(int i = 0; i < size; i++){
+        if(freq[arr[i]] == 1){
+            return arr[i];
+        }
+    }
+}
