@@ -1,0 +1,10 @@
+#include <bits/stdc++.h> 
+int largestElement(vector<int> &arr, int n) {
+    int maxi = INT_MIN;
+    for(int i = 1; i < n; i++){
+        if(arr[i] > arr[i-1]){
+            maxi = max(maxi, arr[i]);
+        }
+    }
+    return maxi;
+}
