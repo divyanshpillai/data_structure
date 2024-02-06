@@ -1,0 +1,90 @@
+// First Method
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int count = 1;
+        int n = nums.size();
+
+        for(int i = 0; i < nums.size(); i++){
+            count = 1;
+            for(int j = i+1; j < nums.size(); j++){
+                if(nums[i] == nums[j]){
+                    count++;
+                }
+            }
+            if(count > n/2){
+                return nums[i];
+            }
+        }
+        return 0;
+    }
+};
+
+// Second Method
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums){
+        int count = 1;
+        int n = nums.size();
+
+        if(n == 1){
+            return nums[0];
+        }
+
+        sort(nums.begin(), nums.end());
+
+        for(int i = 1; i < nums.size(); i++){
+            if(nums[i] == nums[i-1]){
+                count++;
+            }
+            else{
+                count = 1;
+            }
+            if(count > n/2){
+                return nums[i];
+            }
+        }
+        return 0;
+    }
+};
+
+// Third Method
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums){
+        int n = nums.size();
+        unordered_map <int, int> mp;
+
+        for(int i = 0; i < n; i++){
+            mp[nums[i]]++;
+        }
+
+        for(auto x : mp){
+            if(x.second > n/2){
+                return x.first;
+            }
+        }
+
+        return 0;
+    }
+};
+
+// Fourth Method
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums){
+        int n = nums.size();
+
+        if(n == 1){
+            return nums[0];
+        }
+
+        sort(nums.begin(), nums.end());
+
+        return nums[n/2];
+    }
+};
