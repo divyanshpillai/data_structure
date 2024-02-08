@@ -1,0 +1,52 @@
+// Brute Force Approach
+
+vector<int> alternateNumbers(vector<int>&a) {
+    int n = a.size();
+    vector <int> positive;
+    vector <int> negative;
+    vector <int> ans(n);
+    int j = 0, k = 0;
+
+    for(int i = 0; i < a.size(); i++){
+        if(a[i] >= 0){
+            positive.push_back(a[i]);
+        }
+        else{
+            negative.push_back(a[i]);
+        }
+    }
+
+    for(int i = 0; i < a.size(); i++){
+        if(i % 2 == 0){
+            ans[i] = positive[j];
+            j++;
+        }
+        else{
+            ans[i] = negative[k];
+            k++;
+        }
+    }
+    return ans;
+}
+
+// Optimal Approach
+
+vector<int> alternateNumbers(vector<int>&a) {
+    int n = a.size();
+    vector <int> ans(n);
+    int pos = 0;
+    int neg = 1;
+
+    for(int i = 0; i < n; i++){
+        if(a[i] >= 0){
+            ans[pos] = a[i];
+            pos += 2;
+        }
+        else{
+            ans[neg] = a[i];
+            neg += 2;
+        }
+    }
+    
+    return ans;
+}
