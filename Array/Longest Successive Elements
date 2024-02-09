@@ -1,0 +1,47 @@
+// First Method
+int longestSuccessiveElements(vector<int>&a) {
+    sort(a.begin(), a.end());
+    int count = 1;
+    int maxCount = 1;
+
+    for(int i = 1; i < a.size(); i++){
+        if(a[i] - a[i-1] == 1){
+            count++;
+        }
+        else if(a[i] == a[i-1]){
+            count = count;
+        }
+        else{
+            count = 1;
+        }
+        maxCount = max(maxCount, count);
+    }
+
+    return maxCount;
+}
+
+// Second Method
+int longestSuccessiveElements(vector<int>&a) {
+    int count = 1;
+    int maxCount = INT_MIN;
+    unordered_set <int> st;
+
+    for(int i = 0; i < a.size(); i++){
+        st.insert(a[i]);
+    }
+
+    for(auto it : st){
+        if(st.find(it-1) == st.end()){
+            count = 1;
+            int x = it;
+            while(st.find(x+1) != st.end()){
+                count++;
+                x++;
+            }
+            maxCount = max(maxCount, count);
+        }
+    }
+
+    return maxCount;
+} 
+
