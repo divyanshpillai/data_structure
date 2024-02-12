@@ -1,0 +1,21 @@
+class Solution{
+  public:
+    Node * inOrderSuccessor(Node *root, Node *x)
+    {
+        Node* successor = NULL;
+        if(root == NULL){
+            return NULL;
+        }
+        
+        while(root != NULL){
+            if(root->data > x->data){
+                successor = root;
+                root = root->left;
+            }
+            else{
+                root = root->right;
+            }
+        }
+        return successor;
+    }
+};
