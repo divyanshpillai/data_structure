@@ -1,0 +1,93 @@
+/*************************************************************
+
+    Following is the Binary Tree node structure:
+
+    class TreeNode
+    {
+    public:
+        int data;
+        TreeNode *left, *right;
+        TreeNode() : data(0), left(NULL), right(NULL) {}
+        TreeNode(int x) : data(x), left(NULL), right(NULL) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : data(x), left(left), right(right) {}
+    };
+
+*************************************************************/
+// FIRST METHOD
+
+void inorder(TreeNode *root, vector <int> &ans){
+    if(root == NULL){
+        return;
+    }
+
+    inorder(root->left, ans);
+    ans.push_back(root->data);
+    inorder(root->right, ans);
+}     
+
+vector <int> mergeArrays(vector <int> arr1, vector <int> arr2){
+    vector <int> ans(arr1.size() + arr2.size());
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    while(i < arr1.size() && j < arr2.size()){
+        if(arr1[i] >= arr2[j]){
+            ans[k] = arr2[j];
+            j++;
+        }
+        else{
+            ans[k] = arr1[i];
+            i++;
+        }
+        k++;
+    }
+
+    if(i >= arr1.size()){
+        while(j < arr2.size()){
+            ans[k] = arr2[j];
+            k++;
+            j++;
+        }
+    }
+    if(j >= arr2.size()){
+        while(i < arr1.size()){
+            ans[k] = arr1[i];
+            k++;
+            i++;
+        }
+    }
+
+    return ans;
+}
+
+vector<int> mergeBST(TreeNode *root1, TreeNode *root2)
+{
+    vector <int> arr1;
+    vector <int> arr2;
+    inorder(root1, arr1);
+    inorder(root2, arr2);
+    vector <int> ans = mergeArrays(arr1, arr2);
+    return ans;
+}
+
+// SECOND METHOD
+
+void inorder(TreeNode *root, vector <int> &ans){
+    if(root == NULL){
+        return;
+    }
+
+    inorder(root->left, ans);
+    ans.push_back(root->data);
+    inorder(root->right, ans);
+}
+
+vector<int> mergeBST(TreeNode *root1, TreeNode *root2)
+{
+    vector <int> ans;
+    inorder(root1, ans);
+    inorder(root2, ans);
+    sort(ans.begin(), ans.end());
+    return ans;
+}
