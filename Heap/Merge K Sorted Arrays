@@ -1,0 +1,49 @@
+#include <bits/stdc++.h> 
+
+class node{
+    public:
+    int val;
+    int apos;
+    int vpos;
+
+    node(int val, int row, int col){
+        this->val = val;
+        apos = row;
+        vpos = col;
+    }
+};
+
+struct compare{
+    bool operator()(node* d1, node* d2){
+        return d1->val > d2->val;
+    }
+};
+
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k)
+{
+    vector <int> ans;
+    priority_queue <node*, vector<node*>, compare> minheap;
+
+    // Step 1 = Push first element of each array in min heap
+    for(int i = 0; i < k; i++){
+        node* d = new node(kArrays[i][0], i, 0);
+        minheap.push(d);
+    }
+
+    // Step 2 = Push top element of min heap in array and increment index of same array
+    while(minheap.size() > 0){
+        node* curr = minheap.top();
+        minheap.pop();
+        ans.push_back(curr->val);
+
+        int ap = curr->apos;
+        int vp = curr->vpos;
+
+        if(vp+1 < kArrays[ap].size()){
+            node* d = new node(kArrays[ap][vp+1], ap, vp+1);
+            minheap.push(d);
+        }
+    }
+
+    return ans;
+}
