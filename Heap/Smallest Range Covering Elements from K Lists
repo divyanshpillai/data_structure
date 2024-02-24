@@ -1,0 +1,64 @@
+class Solution {
+public:
+    class node{
+        public:
+        int data;
+        int row;
+        int col;
+
+        node(int val, int r, int c){
+            data = val;
+            row = r;
+            col = c;
+        }
+    };
+
+    struct compare{
+        bool operator()(node* d1, node*d2){
+            return d1->data > d2->data;
+        }
+    };
+    
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        priority_queue<node*, vector <node*>, compare> pq;
+        int k = nums.size();
+        int mini = INT_MAX;
+        int maxi = INT_MIN;
+
+        for(int i = 0; i < k; i++){
+            int element = nums[i][0];
+            mini = min(mini, element);
+            maxi = max(maxi, element);
+            node* d = new node(element, i, 0);
+            pq.push(d);
+        }
+
+        int start = mini;
+        int end = maxi;
+
+        while(!pq.empty()){
+            node* curr = pq.top();
+            pq.pop();
+
+            mini = curr->data;
+
+            if(maxi - mini < end - start){
+                start = mini;
+                end = maxi;
+            }
+
+            int row = curr->row;
+            int col = curr->col;
+
+            if(col+1 < nums[row].size()){
+                maxi = max(maxi, nums[row][col+1]);
+                node* d = new node(nums[row][col+1], row, col+1);
+                pq.push(d);
+            }
+            else{
+                break;
+            }
+        }
+        return {start, end};
+    }
+};
