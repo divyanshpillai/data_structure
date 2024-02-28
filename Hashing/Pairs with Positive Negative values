@@ -1,0 +1,31 @@
+class Solution{
+  public:
+    vector<int> PosNegPair(int a[], int n) {
+        unordered_map <int, int> mp;
+        vector <int> ans;
+        vector <int> neg;
+        
+        for(int i = 0; i < n; i++){
+            if(a[i] < 0){
+                neg.push_back(a[i]);
+            }
+            else{
+                mp[a[i]]++;
+            }
+        }
+        
+        sort(neg.begin(), neg.end(), greater<int>());
+        
+        for(int i = 0; i < neg.size(); i++){
+            if(mp.find(abs(neg[i])) != mp.end()){
+                if(mp[abs(neg[i])] >= 1){
+                    ans.push_back(neg[i]);
+                    ans.push_back(abs(neg[i]));
+                }
+            }
+            mp[abs(neg[i])]--;
+        }
+        
+        return ans;
+    }
+};
