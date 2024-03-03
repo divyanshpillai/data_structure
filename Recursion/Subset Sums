@@ -1,0 +1,26 @@
+class Solution
+{
+public:
+    void solve(vector<int> arr, vector<int> &ans, int N, int i, int sum){
+        if(i >= N){
+            ans.push_back(sum);
+            return;
+        }
+        
+        // pick
+        sum += arr[i];
+        solve(arr, ans, N, i+1, sum);
+        sum -= arr[i];
+        
+        // not pick
+        solve(arr, ans, N, i+1, sum);
+    }
+
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        vector<int> ans;
+        solve(arr, ans, N, 0, 0);
+        
+        return ans;
+    }
+};
