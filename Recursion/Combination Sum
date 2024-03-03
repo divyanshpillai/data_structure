@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void solve(vector<int>& arr, int target, int index, vector<vector<int>> &ans, vector <int> &temp){
+        if(index >= arr.size()){
+            if(target == 0){
+                ans.push_back(temp);
+            }
+            return;
+        }
+
+        // take
+        if(arr[index] <= target){
+            temp.push_back(arr[index]);
+            solve(arr, target-arr[index], index, ans, temp);
+            temp.pop_back();
+        }
+        
+        // not take
+        solve(arr, target, index+1, ans, temp);
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        int index = 0;
+        vector<vector<int>> ans;
+        vector <int> temp;
+        solve(candidates, target, index, ans, temp);
+
+        return ans;
+    }
+};
