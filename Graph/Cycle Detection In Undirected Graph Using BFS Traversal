@@ -1,0 +1,50 @@
+#include <unordered_map>
+#include <queue>
+#include <list>
+
+bool bfsDetectCycle(int src, unordered_map<int, list<int>> &adj, unordered_map<int, bool> &vis){
+    queue<pair<int, int>> q;
+    vis[src] = 1;
+    q.push({src, -1});
+
+    while(!q.empty()){
+        int node = q.front().first;
+        int parent = q.front().second;
+        q.pop();
+
+        for(auto adjNode : adj[node]){
+            if(!vis[adjNode]){
+                vis[adjNode] = 1;
+                q.push({adjNode, node});
+            }
+            else if(parent != adjNode){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+    unordered_map<int, bool> vis;
+    unordered_map<int, list<int>> adj;
+    // vector<int> adj[n+1];
+    for(int i = 0; i < m; i++){
+        int u = edges[i][0];
+        int v = edges[i][1];
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    for(int i = 1; i <= n; i++){
+        if(!vis[i]){
+            if(bfsDetectCycle(i, adj, vis)){
+                return "Yes";
+            }
+        }
+    }
+    return "No";
+}
