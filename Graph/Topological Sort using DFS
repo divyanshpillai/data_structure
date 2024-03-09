@@ -1,0 +1,44 @@
+#include <bits/stdc++.h> 
+
+void dfsTopological(int src, vector <vector<int>> &adj, int vis[], stack<int> &s){
+    vis[src] = 1;
+
+    for(auto it : adj[src]){
+        if(!vis[it]){
+            dfsTopological(it, adj, vis, s);
+        }
+    }
+
+    s.push(src);
+}
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e)  {
+    // Using map is giving TLE 
+    // unordered_map<int, bool> vis;
+    // unordered_map<int, list<int>> adj;
+
+    // Instead we are using vector
+    int vis[v] = {0};
+    vector <vector<int>> adj(v);
+    vector<int> ans;
+    stack<int> s;
+
+    for(int i = 0; i < edges.size(); i++){
+        int u = edges[i][0];
+        int v = edges[i][1];
+
+        adj[u].push_back(v);
+    }
+
+    for(int i = 0; i < v; i++){
+        if(!vis[i]){
+            dfsTopological(i, adj, vis, s);
+        }
+    }
+
+    while(!s.empty()){
+        ans.push_back(s.top());
+        s.pop();
+    }
+
+    return ans;
+}
