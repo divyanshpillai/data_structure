@@ -2,24 +2,17 @@
 #include <queue>
 #include <list>
 
-bool bfsDetectCycle(int src, unordered_map<int, list<int>> &adj, unordered_map<int, bool> &vis){
-    queue<pair<int, int>> q;
+bool dfsDetectCycle(int src, int parent, unordered_map<int, list<int>> &adj, unordered_map<int, bool> &vis){
     vis[src] = 1;
-    q.push({src, -1});
 
-    while(!q.empty()){
-        int node = q.front().first;
-        int parent = q.front().second;
-        q.pop();
-
-        for(auto adjNode : adj[node]){
-            if(!vis[adjNode]){
-                vis[adjNode] = 1;
-                q.push({adjNode, node});
-            }
-            else if(parent != adjNode){
+    for(auto adjNode : adj[src]){
+        if(!vis[adjNode]){
+            if(dfsDetectCycle(adjNode, src, adj, vis)){
                 return true;
             }
+        }
+        else if(adjNode != parent){
+            return true;
         }
     }
 
@@ -42,7 +35,7 @@ string cycleDetection (vector<vector<int>>& edges, int n, int m)
 
     for(int i = 0; i < n; i++){
         if(!vis[i]){
-            if(bfsDetectCycle(i, adj, vis)){
+            if(dfsDetectCycle(i, -1, adj, vis)){
                 return "Yes";
             }
         }
