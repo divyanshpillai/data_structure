@@ -1,0 +1,65 @@
+#include <unordered_map>
+#include <list>
+#include <queue>
+#include <stack>
+
+void topoSort(int src, unordered_map <int, list<pair<int, int>>> &adj, unordered_map<int, bool> &vis, stack<int> &st){
+    vis[src] = true;
+
+    for(auto it : adj[src]){
+        int i = it.first;
+        if(!vis[i]){
+            topoSort(i, adj, vis, st);
+        }
+    }
+    st.push(src);
+}
+
+vector<int> shortestPathInDAG(int n, int m, vector<vector<int>> &edges)
+{
+    unordered_map <int, list<pair<int, int>>> adj;
+    unordered_map<int, bool> vis;
+    stack<int> st;
+
+    for(int i = 0; i < m; i++){
+        int u = edges[i][0];
+        int v = edges[i][1];
+        int wt = edges[i][2];
+
+        adj[u].push_back({v, wt});
+    }
+
+    for(int i = 0; i < n; i++){
+        if(!vis[i]){
+            topoSort(i, adj, vis, st);
+        }
+    }
+
+    vector<int> dist(n, INT_MAX);
+
+    int src = 0;
+    dist[src] = 0;
+
+    while(!st.empty()){
+        int node = st.top();
+        st.pop();
+
+        if(dist[node] != INT_MAX){
+            for(auto i : adj[node]){
+                int v = i.first;
+                int wt = i.second;
+                if (dist[node] + wt < dist[v]){
+                    dist[v] = dist[node] + wt;
+                }
+            }
+        }
+    }
+
+    for(int i = 0; i < n; i++){
+        if(dist[i] == INT_MAX){
+            dist[i] = -1;
+        }
+    }
+
+    return dist;
+}
