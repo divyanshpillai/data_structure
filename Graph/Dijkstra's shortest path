@@ -1,0 +1,55 @@
+#include <bits/stdc++.h> 
+vector<int> dijkstra(vector<vector<int>> &vec, int vertices, int edges, int source) {
+    unordered_map <int, list<pair<int, int>>> adj;
+
+    //creation of adjacency list of pair of (node, weight)
+    for(int i = 0; i < vec.size(); i++){
+        int u = vec[i][0];
+        int v = vec[i][1];
+        int wt = vec[i][2];
+
+        adj[u].push_back({v, wt});
+        adj[v].push_back({u, wt});
+    }
+
+    //creation of distance vector and initialise with INT_MAX
+    vector <int> dist(vertices);
+    for(int i = 0; i < vertices; i++){
+        dist[i] = INT_MAX;
+    }
+
+    //creation of set on basis (distance, node)
+    set <pair<int, int>> st;
+
+    //initialise dist vector with 0 and set with src(distance) and src(node)
+    dist[source] = 0;
+    st.insert({0, source});
+
+    while(!st.empty()){
+        auto top = *(st.begin());
+        int nodeDist = top.first;
+        int topNode = top.second;
+
+        st.erase(st.begin());
+
+        for(auto neighbour : adj[topNode]){
+            if(nodeDist + neighbour.second < dist[neighbour.first]){
+                auto record = st.find({dist[neighbour.first], neighbour.first});
+
+                //if record found then erase it
+                if(record != st.end()){
+                    st.erase(record);
+                }
+                
+                //update the distance vector
+                dist[neighbour.first] = nodeDist + neighbour.second;
+
+                //push the updated record in the set
+                st.insert({dist[neighbour.first], neighbour.first});
+            }
+        }
+    }
+
+    return dist;
+
+}
