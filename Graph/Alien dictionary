@@ -1,0 +1,58 @@
+vector<int> topoSort(unordered_map<int, list<int>> adj, int v){
+    vector<int> indegree(v);
+    vector<int> ans;
+    queue<int> q;
+
+    for(auto i : adj){
+        for(auto j : i.second){
+            indegree[j]++;
+        }
+    }
+
+    for(int i = 0; i < v; i++){
+        if(indegree[i] == 0){
+            q.push(i);
+        }
+    }
+
+    while(!q.empty()){
+        int temp = q.front();
+        q.pop();
+
+        ans.push_back(temp);
+
+        for(auto neighbour : adj[temp]){
+            indegree[neighbour]--;
+            if(indegree[neighbour] == 0){
+                q.push(neighbour);
+            }
+        }
+    }
+
+    return ans;
+}
+
+string getAlienLanguage(vector<string> &dictionary, int k)
+{
+    int n = dictionary.size();
+    unordered_map<int, list<int>> adj;
+    for(int i = 0; i < n-1; i++){
+        string s1 = dictionary[i];
+        string s2 = dictionary[i+1];
+        int size = min(s1.size(), s2.size());
+        for(int j = 0; j < size; j++){
+            if (s1[j] != s2[j]) {
+                adj[s1[j] - 'a'].push_back(s2[j] - 'a');
+                break;
+            }
+        }
+    }
+
+    string res = "";
+    vector<int> ans = topoSort(adj, k);
+    for(auto it : ans){
+        res += char(it + 'a');
+    }
+
+    return res;
+}
