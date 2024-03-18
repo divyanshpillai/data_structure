@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<int> findOrder(int v, vector<vector<int>>& prerequisites) {
+        unordered_map <int, list<int>> adj;
+        vector<int> indegree(v);
+        vector<int> ans;
+        queue<int> q;
+        
+        for(auto it : prerequisites){
+            adj[it[1]].push_back(it[0]);
+        }
+
+        for(auto i : adj){
+            for(auto j : i.second){
+                indegree[j]++;
+            }
+        }
+
+        for(int i = 0; i < v; i++){
+            if(indegree[i] == 0){
+                q.push(i);
+            }
+        }
+
+        while(!q.empty()){
+            int temp = q.front();
+            q.pop();
+
+            ans.push_back(temp);
+
+            for(auto neighbour : adj[temp]){
+                indegree[neighbour]--;
+                if(indegree[neighbour] == 0){
+                    q.push(neighbour);
+                }
+            }
+
+        }
+
+        if(ans.size() == v)
+            return ans;
+        return {};
+    }
+};
