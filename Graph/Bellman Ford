@@ -1,0 +1,32 @@
+vector<int> bellmonFord(int n, int m, int src, vector<vector<int>> &edges) {
+    // size of dis vector is n+1 because graph starts with 1 i.e. it contains 1-based indexing
+    vector<int> dis(n+1, 1e8);
+    dis[src] = 0;
+    
+    // traverse from 1 to n-1
+    for(int i = 1; i < n; i++){
+        // traverse in all edges
+        for(auto it : edges){
+            int u = it[0];
+            int v = it[1];
+            int wt = it[2];
+
+            if(dis[u] + wt < dis[v]){
+                dis[v] = dis[u] + wt;
+            }
+        }
+    }
+
+    // check for negative cycle
+    for(auto it : edges){
+        int u = it[0];
+        int v = it[1];
+        int wt = it[2];
+
+        if(dis[u] != 1e8 && dis[u] + wt < dis[v]){
+            break;
+        }
+    }
+
+    return dis;
+}
