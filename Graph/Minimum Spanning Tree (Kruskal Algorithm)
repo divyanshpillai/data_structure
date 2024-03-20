@@ -19,7 +19,21 @@ int findParent(vector<int> &parent, int node){
   return parent[node] = findParent(parent, parent[node]);
 }
 
-void unionSet(vector<int> &parent, vector<int> &rank, int u, int v){
+void unionSetBySize(vector<int> &parent, vector<int> &size, int u, int v){
+  int pu = findParent(parent, u);
+  int pv = findParent(parent, v);
+
+  if(size[pu] < size[pv]){
+    parent[pu] = pv;
+    size[pv] += size[pu];
+  }
+  else{
+    parent[pv] = pu;
+    size[pu] += size[pv];
+  }
+}
+
+void unionSetByRank(vector<int> &parent, vector<int> &rank, int u, int v){
   // ultimate parent of u and v
   int pu = findParent(parent, u);
   int pv = findParent(parent, v);
@@ -56,7 +70,7 @@ int minimumSpanningTree(vector<vector<int>>& edges, int n)
 
     if(u != v){
       minWeight += wt;
-      unionSet(parent, rank, u, v);
+      unionSetByRank(parent, rank, u, v);
     }
   }
 
