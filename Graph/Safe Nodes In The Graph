@@ -1,0 +1,50 @@
+#include <bits/stdc++.h> 
+
+bool dfsCheck(unordered_map<int, list<int>> &adj, int vis[], int pathVis[], int check[], int src){
+  vis[src] = 1;
+  pathVis[src] = 1;
+  check[src] = 0;
+
+  for(auto it : adj[src]){
+    if(!vis[it]){
+      if(dfsCheck(adj, vis, pathVis, check, it))
+        return true;
+    }
+    else if(pathVis[it]){
+      return true;
+    }
+  }
+
+  check[src] = 1;
+  pathVis[src] = 0;
+  return false;
+}
+
+vector<int> safeNodes(vector<vector<int>> &edges, int n, int e) {
+  unordered_map<int, list<int>> adj;
+  int vis[n] = {0};
+  int pathVis[n] = {0};
+  int check[n] = {0};
+  vector<int> ans;
+
+  for(int i = 0; i < edges.size(); i++){
+    int u = edges[i][0];
+    int v = edges[i][1];
+
+    adj[u].push_back(v);
+  }
+
+  for(int i = 0; i < n; i++){
+    if(!vis[i]){
+      dfsCheck(adj, vis, pathVis, check, i);
+    }
+  }
+
+  for(int i = 0; i < n; i++){
+      if(check[i] == 1){
+          ans.push_back(i);
+      }
+  }
+
+  return ans;
+}
