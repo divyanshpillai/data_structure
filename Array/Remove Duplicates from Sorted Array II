@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int ind = 0;
+        for(auto i : nums){
+            if(ind == 0 || ind == 1 || nums[ind-2] != i){
+                nums[ind] = i;
+                ind++;
+            }
+        }
+
+        return ind;
+    }
+};
