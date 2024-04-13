@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minDistanceToA(char ch){
+        return min(ch - 'a', 26 - (ch - 'a'));
+    }
+    string getSmallestString(string s, int k) {
+        string res = s;
+        for(int i = 0; i < s.size(); i++){
+            int dist = minDistanceToA(s[i]);
+            if(dist <= k){
+                res[i] = 'a';
+                k -= dist;
+            }
+            else{
+                res[i] -= k;
+                break;
+            }
+        }
+
+        return res;
+    }
+};
