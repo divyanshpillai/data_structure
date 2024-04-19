@@ -1,7 +1,7 @@
 class Solution{
   public:		
 	int lps(string s) {
-	    vector<int> lps(s.size(), 0);
+	vector<int> lps(s.size(), 0);
         int pre = 0;
         int suff = 1;
 
