@@ -1,0 +1,75 @@
+# Approach 1 (Recursive Approach - TLE)
+
+class Solution {
+  public:
+    long long int solve(int coins[], int idx, int sum, int n){
+        if(sum == 0){
+            return 1;
+        }
+        if(idx == n){
+            return 0;
+        }
+        if(coins[idx] > sum){
+            return solve(coins, idx+1, sum, n);
+        }
+        else{
+            return solve(coins, idx, sum-coins[idx], n) + solve(coins, idx+1, sum, n);
+        }
+    }
+    
+    long long int count(int coins[], int N, int sum) {
+        return solve(coins, 0, sum, N);
+    }
+};
+
+# Approach 2 (Top-Down and Memoization Approach)
+
+class Solution {
+  public:
+    long long int solve(int coins[], int idx, int sum, int n, vector<vector<long long int>>&dp){
+        if(sum == 0){
+            return 1;
+        }
+        if(idx == n){
+            return 0;
+        }
+        if(dp[idx][sum] != -1){
+            return dp[idx][sum];
+        }
+        if(coins[idx] > sum){
+            return dp[idx][sum] = solve(coins, idx+1, sum, n, dp);
+        }
+        else{
+            return dp[idx][sum] = solve(coins, idx, sum-coins[idx], n, dp) + solve(coins, idx+1, sum, n, dp);
+        }
+    }
+    
+    long long int count(int coins[], int N, int sum) {
+        vector<vector<long long int>>dp(N+1, vector<long long int> (sum+1, -1));
+        return solve(coins, 0, sum, N, dp);
+    }
+};
+
+# Approach 3 (Bottom-Up and Tabulation Approach)
+
+class Solution {
+  public:
+    long long int count(int coins[], int N, int sum) {
+        vector<vector<long long int>>dp(N+1, vector<long long int> (sum+1, 0));
+        for(int i = 0; i <= N; i++){
+            dp[i][0] = 1;
+        }
+        
+        for(int i = 1; i <= N; i++){
+            for(int j = 1; j <= sum; j++){
+                if(coins[i-1] > j){
+                    dp[i][j] = dp[i-1][j];
+                }
+                else{
+                    dp[i][j] = dp[i][j-coins[i-1]] + dp[i-1][j];
+                }
+            }
+        }
+        return dp[N][sum];
+    }
+};
